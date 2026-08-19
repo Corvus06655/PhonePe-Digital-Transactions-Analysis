@@ -1,94 +1,45 @@
-# PhonePe Digital Transactions Analysis 📊
+# PhonePe Digital Transactions Analysis
 
-An interactive Power BI dashboard analyzing digital payment transaction patterns, user demographics, and platform reliability metrics for a UPI-based payments platform.
+An interactive **Power BI** analysis of **300,000 transactions** and **107,658 users** for a UPI-style digital payments platform. The dashboard tracks transaction health, service mix, user demographics, and month-over-month growth.
 
-## 📌 Overview
+> **Portfolio focus:** Power Query transformation, star-schema modeling, DAX measures, KPI design, time intelligence, and payment-reliability analysis.
 
-This project analyzes **300,000+ transactions** from **107,658 users** across a digital payments platform, uncovering insights into transaction success rates, service-wise revenue distribution, user demographics, and month-over-month growth trends.
+## Business objective
 
-## 🎯 Business Objective
+Digital payment teams need visibility into transaction success, failure reasons, service mix, user activity, and growth. This dashboard is designed to help stakeholders monitor platform health and identify areas for operational follow-up.
 
-Digital payment platforms need continuous visibility into transaction health and user behavior to reduce failures, identify high-value service segments, and track growth. This dashboard answers:
-- What is the platform's transaction success rate, and where do failures occur?
-- Which services (Money Transfer, Recharge & Bills, Loans, Insurance) drive the most volume and value?
-- How is transaction volume and value trending month-over-month?
-- Which user age groups are most active on the platform?
+## Data model and KPI design
 
-## 📂 Dataset
+The report uses a star-schema design with Date_table, All_Users, and All_Transactions. The transaction table contains 300,000 records, the user table contains 107,658 records, and the date table covers 365 days for time intelligence.
 
-| Table | Records | Description |
-|---|---|---|
-| `All_Transactions` | 300,000 | Transaction ID, Amount, User ID, Service, Service Type, Payment Status, Date |
-| `All_Users` | 107,658 | User ID, Name, Age, Join Date, Age Group |
-| `Date_table` | 365 days | Calendar table for time intelligence |
+The KPI layer includes total transaction value, total transactions, successful transactions, success rate, total users, month-over-month transaction growth, and month-over-month value growth. The success rate is defined as successful transactions divided by total transactions.
 
-**Services covered:** Money Transfer, Recharge & Bills, Loans, Insurance (16 sub-service types including UPI transfer, Mobile Recharge, FASTag, Bike/Gold Loan, Mutual Fund, Term Life, etc.)
+## Dashboard coverage
 
-**Payment outcomes tracked:** Successful, Failed, Wrong PIN, Server Error, Insufficient Amount
+The report includes KPI cards for transaction value, transaction count, users, and success rate; service and service-type comparisons; monthly and quarterly trends; payment-status analysis; age-group and top-user views; and slicers for time period and payment status.
 
-## 🛠️ Tools & Techniques
+## Observed findings
 
-- **Power BI Desktop** — data modeling, report design
-- **Power Query (M)** — data import and transformation from source Excel files
-- **DAX** — 9 custom measures for KPIs and time intelligence
-- **Data Modeling** — star schema with Date, Users, and Transactions tables
+The supplied analysis reports an overall success rate of approximately **96%**. Money Transfer is the largest service by transaction volume. Failure categories include Wrong PIN, Server Error, and Insufficient Amount, which can be mapped to operational follow-up questions. Gen X and Millennials are described as the core user groups in the supplied analysis.
 
-## 📐 Key DAX Measures
+These are dashboard observations, not causal conclusions. Operational decisions should be validated against current production data and segmented by time, service, geography, and user cohort.
 
-```dax
-Total Transaction value = SUM(All_Transactions[Amount])
+## Tools and methods
 
-Total transaction = COUNT(All_Transactions[Transaction_ID])
+Power BI Desktop · Power Query (M) · DAX · Data modeling · Time intelligence · KPI reporting
 
-Succesfull Transaction =
-    CALCULATE([Total transaction], All_Transactions[Payment_Status] = "Successful")
+## Repository contents
 
-Success Rate = DIVIDE([Succesfull Transaction], [Total transaction])
+The repository contains Phone.pbix, the Power BI report file, and this documentation. Open the report in Power BI Desktop to review the model relationships, Power Query steps, DAX measures, report pages, slicers, and drill-through behavior.
 
-Total Users = DISTINCTCOUNT(All_Users[User_ID])
+## How to review locally
 
-Trans Value PM =
-    CALCULATE([Total Transaction value], DATEADD(Date_table[Date], -1, MONTH))
+Clone the repository and open Phone.pbix in Power BI Desktop. Use the time and payment-status slicers to inspect changes in platform health and service performance.
 
-Total Value MOM% =
-    DIVIDE([Total Transaction value] - [Trans Value PM], [Trans Value PM], 0)
+## Limitations and next steps
 
-Total Trans PM =
-    CALCULATE([Total transaction], DATEADD(Date_table[Date], -1, MONTH))
+A production-ready version would include a visible dashboard export, a data dictionary, refresh instructions, explicit date-coverage metadata, and a reconciliation check between transaction and user tables. A useful next extension would be a failure-rate cohort view by service and month.
 
-Total Trans MOM% =
-    DIVIDE([Total transaction] - [Total Trans PM], [Total Trans PM], 0)
-```
+---
 
-## 🖼️ Dashboard Preview
-
-![Dashboard Overview](images/dashboard-overview.png)
-
-*Add your screenshot(s) to an `images/` folder in this repo and update the path above. To capture: open `Phone.pbix` in Power BI Desktop → File → Export → Export to PDF/Image, or simply take a screenshot of the report canvas.*
-
-## 📊 Dashboard Features
-
-- **KPI Cards:** Total Transactions, Total Transaction Value, Total Users, Success Rate
-- **Line Chart:** Transaction trend by Month/Quarter
-- **Column Charts:** Transaction value by Service and by Service Type (tooltip drill-through)
-- **Donut Charts:** User distribution by Age Group; Weekly transaction trend
-- **Top Users Chart:** Ranked by transaction value
-- **Slicers:** Month, Payment Status — for interactive filtering
-
-## 🔍 Key Insights
-
-- **96% overall success rate** across 300,000 transactions; failures concentrated in Wrong PIN, Server Error, and Insufficient Amount categories — highlighting specific friction points in the payment flow.
-- **Money Transfer is the highest-volume service** (150,000 transactions — 50% of all activity), followed by Recharge & Bills, Loans, and Insurance (50,000 each).
-- **Gen X and Millennials are the platform's core user base**, together accounting for ~80,000 of the 107,658 total users, with Gen Z as a fast-growing segment.
-- Month-over-Month DAX measures enable continuous tracking of both transaction volume and value growth, supporting proactive business decisions.
-
-## 📎 How to Use
-
-1. Clone this repo
-2. Open `Phone.pbix` in Power BI Desktop
-3. Explore interactive filters, slicers, and drill-through tooltips
-
-## 👤 Author
-
-**Mayank Srivastava**
-[LinkedIn](https://linkedin.com/in/your-linkedin) · [GitHub](https://github.com/Corvus06655)
+*Part of Mayank Srivastava's Data Analyst and Business Intelligence portfolio.*
